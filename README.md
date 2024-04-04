@@ -64,15 +64,30 @@ wget $SRC/lm/lm_train_pbr.zip    # PBR training images
 ```
 </details>
 
+Datasets are stored in `.zip` format. You can extract them using the following command:
+```
+for file in $DATASET_NAME/*.zip; do unzip "$file" -d "${file%.*}"; done
+```
+
+If you are running on a machine with high bandwidth, you can increase your download speed by adding the following environment variable:
+```
+pip install huggingface_hub[hf_transfer]
+export HF_HUB_ENABLE_HF_TRANSFER=1
+```
+
 ### Uploading datasets
 
-You create a new dataset and want to share it with the BOP community. Here is a step-by-step guide to upload the dataset and create a pull request to [our huggingface hub](https://huggingface.co/datasets/bop-benchmark/datasets/).
+You create a new dataset and want to share it with BOP community. Here is a step-by-step guide to upload the dataset and create a pull request to [our huggingface hub](https://huggingface.co/datasets/bop-benchmark/datasets/).
+
+Similar to the download process, you can upload the dataset using the `huggingface_hub` library or `huggingface_hub[cli]`. 
+
+#### Option 1: Using `huggingface_hub`:
+
+TODO 
+
+#### Option 2: Using `huggingface_hub[cli]`:
 
 <details><summary>Click to expand</summary>
-
-Similar to the download process, you can upload the dataset using the `huggingface_hub` library or the command line. 
-
-#### Option 2: Using command-line
 
 a. Log-in and create a token
 ```
