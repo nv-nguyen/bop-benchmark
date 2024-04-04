@@ -77,19 +77,20 @@ export HF_HUB_ENABLE_HF_TRANSFER=1
 
 ### Uploading datasets
 
-You create a new dataset and want to share it with BOP community. Here is a step-by-step guide to upload the dataset and create a pull request to [our huggingface hub](https://huggingface.co/datasets/bop-benchmark/datasets/).
+You create a new dataset and want to share it with BOP community. Here is a step-by-step guide to upload the dataset and create a pull request to [our huggingface hub](https://huggingface.co/datasets/bop-benchmark/datasets/). Feel free to reach out to vanngn.nguyen@gmail.com if you have any questions.
 
-Similar to the download process, you can upload the dataset using the `huggingface_hub` library or `huggingface_hub[cli]`. 
+Similar to the download process, you can upload the dataset using the `huggingface_hub` library or `huggingface_hub[cli]`. We recommend using `huggingface_hub[cli]` for its simplicity.
 
-#### Option 1: Using `huggingface_hub`:
-
-TODO 
-
-#### Option 2: Using `huggingface_hub[cli]`:
+#### Option 1: Using `huggingface_hub[cli]`:
 
 <details><summary>Click to expand</summary>
 
-a. Log-in and create a token
+a. Install the library:
+```
+pip install -U "huggingface_hub[cli]"
+```
+
+b. Log-in and create a token
 ```
 huggingface-cli login
 ```
@@ -103,17 +104,64 @@ Make sure you are in the bop-benchmark group by running:
 huggingface-cli whoami
 ```
 
-b. Upload
+c. Upload dataset:
+
 The command is applied for both folders and specific files:
 ```
-# Usage:  huggingface-cli upload [repo_id] [local_path] [path_in_repo] --repo-type=dataset -commit-message="message"
+# Usage:  huggingface-cli upload bop-benchmark/datasets [local_path] [path_in_repo] --repo-type=dataset --create-pr
 ```
-For example, to upload MegaPose-GSO:
+For example, to upload hope dataset:
 ```
-export LOCAL_FOLDER=~/datasets/MegaPose-GSO
-export HF_FOLDER=/MegaPose-GSO
+export LOCAL_FOLDER=./datasets/hope
+export HF_FOLDER=/hope
 
-huggingface-cli upload bop-benchmark/datasets $LOCAL_FOLDER $HF_FOLDER --repo-type=dataset
+huggingface-cli upload bop-benchmark/datasets $LOCAL_FOLDER $HF_FOLDER --repo-type=dataset --create-pr
 ```
 
 </details>
+
+#### Option 2: Using `huggingface_hub`:
+
+<details><summary>Click to expand</summary>
+
+a. Install the library:
+```
+pip install --upgrade huggingface_hub
+```
+b. Creating a pull-request:
+
+We recommend organizing the dataset in a folder and then uploading it to the huggingface hub. For example, to upload `lmo`:
+```
+from huggingface_hub import HfApi, CommitOperationAdd
+
+dataset_name = "lmo"
+local_dir = "./datasets/lmo"
+
+operations = []
+for file in local_dir.glob("*"):
+    add_commit = CommitOperationAdd(
+        path_in_repo=f"/{dataset_name}",
+        path_or_fileobj=local_dir,
+    )
+    operations.append(add_commit)
+
+
+api = HfApi()
+MY_TOKEN = # get from https://huggingface.co/settings/tokens
+api.create_commit(repo_id="bop-benchmark/datasets", 
+                  repo_type="dataset",
+                  commit_message=f"adding {dataset_name} dataset", 
+                  token=MY_TOKEN,
+                  operations=operations, 
+                  create_pr=True)
+
+```
+If your dataset is large (> 500 GB), you can upload it in chunks by adding the `multi_commits=True, multi_commits_verbose=True,` argument. More options are available in the [official documentation](https://huggingface.co/docs/huggingface_hub/v0.22.2/en/package_reference/hf_api#huggingface_hub.HfApi.create_pull_request).
+
+</details>
+
+If you are running on a machine with high bandwidth, you can increase your download speed by adding the following environment variable:
+```
+pip install huggingface_hub[hf_transfer]
+export HF_HUB_ENABLE_HF_TRANSFER=1
+```
