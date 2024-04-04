@@ -31,7 +31,7 @@ If you want to download the entire BOP datasets (~3TB), please remove the `allow
 </details>
 
 
-#### Option 2: Using command line:
+#### Option 2: Using `huggingface_hub[cli]`:
 
 <details><summary>Click to expand</summary>
 
@@ -47,6 +47,21 @@ export DATASET_NAME=hope
 huggingface-cli download bop-benchmark/datasets --include "$DATASET_NAME/*.zip" --local-dir $LOCAL_DIR --repo-type=dataset  
 ```
 Please remove this argument `--include "$DATASET_NAME/*.zip"` to download entire BOP datasets (~3TB). More options are available in the [official documentation](https://huggingface.co/docs/huggingface_hub/main/en/guides/download).
+</details>
+
+#### Option 3: Using `wget`:
+
+<details><summary>Click to expand</summary>
+
+Similar `wget` command as in [BOP website](https://bop.felk.cvut.cz/datasets/) can be used to download the dataset from huggingface hub:
+```
+export SRC=https://huggingface.co/datasets/bop-benchmark/datasets/resolve/main
+
+wget $SRC/lm/lm_base.zip         # Base archive 
+wget $SRC/lm/lm_models.zip       # 3D object models
+wget $SRC/lm/lm_test_all.zip     # All test images ("_bop19" for a subset)
+wget $SRC/lm/lm_train_pbr.zip    # PBR training images 
+```
 </details>
 
 ### Uploading datasets
