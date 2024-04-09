@@ -4,7 +4,7 @@ Toolkit to download/upload datasets for BOP benchmark
 
 The official guide from HuggingFace is available for [download](https://huggingface.co/docs/huggingface_hub/main/en/guides/download) and [upload](https://huggingface.co/docs/huggingface_hub/main/en/guides/). This tutorial provides a brief overview of the process for working with BOP challenge [bop-benchmark/datasets](https://huggingface.co/datasets/bop-benchmark/datasets/).
 
-### Downloading datasets
+## Downloading datasets
 
 #### Option 1: Using `huggingface_hub`:
 
@@ -75,7 +75,7 @@ pip install huggingface_hub[hf_transfer]
 export HF_HUB_ENABLE_HF_TRANSFER=1
 ```
 
-### Uploading datasets
+## Uploading datasets
 
 You create a new dataset and want to share it with BOP community. Here is a step-by-step guide to upload the dataset and create a pull request to [our huggingface hub](https://huggingface.co/datasets/bop-benchmark/datasets/). Feel free to reach out to vanngn.nguyen@gmail.com if you have any questions.
 
@@ -160,8 +160,25 @@ If your dataset is large (> 500 GB), you can upload it in chunks by adding the `
 
 </details>
 
+## FAQ
+
+#### 1. How to upload a large file > 50 GB?
+Note that HuggingFace limits the size of each file to 50 GB. If your dataset is larger, you can split it into smaller files:
+```
+zip -s 50g input.zip --out output.zip
+```
+This command will split the `input.zip` into multiple files of 50GB size `output.zip`, `output.z01`, `output.z01`, ... You can then extract them using one of the following commands:
+```
+# option 1: combine 
+zip -s0 output.zip --out input.zip
+
+# option 2: using 7z to unzip directly
+7z x output.zip
+```
+#### 2. How to increase download speed?
 If you are running on a machine with high bandwidth, you can increase your download speed by adding the following environment variable:
 ```
 pip install huggingface_hub[hf_transfer]
 export HF_HUB_ENABLE_HF_TRANSFER=1
 ```
+
