@@ -66,7 +66,7 @@ wget $SRC/lm/lm_train_pbr.zip    # PBR training images
 
 Datasets are stored in `.zip` format. You can extract them using the following command:
 ```
-for file in $DATASET_NAME/*.zip; do unzip "$file" -d "${file%.*}"; done
+bash scripts/extract_bop.sh
 ```
 
 If you are running on a machine with high bandwidth, you can increase your download speed by adding the following environment variable:
