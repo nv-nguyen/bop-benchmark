@@ -1,4 +1,4 @@
-for file in $LOCAL_DIR/*.zip; do
+for file in $LOCAL_DIR/$DATASET_NAME/*.zip; do
     if [[ $file == *_base.zip ]]; then
         unzip -j "$file" -d "$(dirname "$file")"
     else
