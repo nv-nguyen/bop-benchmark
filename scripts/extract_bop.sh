@@ -1,4 +1,4 @@
-for file in $LOCAL_DIR/$DATASET_NAME/*.zip; do
+for file in $LOCAL_DIR/$NAME/*.zip; do
     if [[ $file == *_base.zip ]]; then
         unzip -q -j "$file" -d "$(dirname "$file")"
         echo "Extraction of base file $file is complete."
